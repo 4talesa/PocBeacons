@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.totvs.pcsistemas.pocbeacons.pocbeacons" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/nearables_example01"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".BeaconListActivity"
+            android:label="@string/title_activity_beacon_list" >
+        </activity>
+        <activity
+            android:name=".NearableListActivity"
+            android:label="@string/title_activity_nearable_list" >
+        </activity>
+        <activity
+            android:name=".NearablePlayActivity"
+            android:label="@string/title_activity_nearable_play" >
+        </activity>
+        <activity
+            android:name=".NearablePlayProximity"
+            android:label="@string/title_activity_display_beacon_notification" >
+        </activity>
+        <activity
+            android:name=".NearableProximityActivity"
+            android:label="@string/title_activity_nearable_proximity" >
+        </activity>
+    </application>
+
+</manifest>
