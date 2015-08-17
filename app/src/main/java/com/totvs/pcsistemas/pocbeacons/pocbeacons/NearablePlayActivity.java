@@ -178,13 +178,14 @@ public class NearablePlayActivity extends ActionBarActivity {
                             if (selectedNearable != null && !snapshot.child("Offer").getValue().toString().isEmpty()&& !snapshot.child("OfferPicture").getValue().toString().isEmpty()) {
                                 Intent it = new Intent(NearablePlayActivity.this, NearablePlayProximity.class);
 
-
-                                it.putExtra("FIREBASE_URL", FIREBASE_URL);
-                                it.putExtra("beaconIdentifier", selectedNearable.identifier);
-                                it.putExtra("beaconTitle", snapshot.child("Description").getValue().toString());
-                                it.putExtra("beaconPictureUrl", snapshot.child("Picture").getValue().toString());
-                                it.putExtra("beaconOffer", snapshot.child("Offer").getValue().toString());
-                                it.putExtra("beaconOfferPictureUrl", snapshot.child("OfferPicture").getValue().toString());
+                                it.putExtra("FIREBASE_URL",                 FIREBASE_URL);
+                                it.putExtra("beaconIdentifier",             selectedNearable.identifier);
+                                it.putExtra("beaconTitle",                  snapshot.child("Description").getValue().toString());
+                                it.putExtra("beaconPictureUrl",             snapshot.child("Picture").getValue().toString());
+                                it.putExtra("beaconOffer",                  snapshot.child("Offer").getValue().toString());
+                                it.putExtra("beaconOfferPictureUrl",        snapshot.child("OfferPicture").getValue().toString());
+                                it.putExtra("beaconOfferSponsor",           snapshot.child("OfferSponsor").getValue().toString());
+                                it.putExtra("beaconOfferPictureSponsorUrl", snapshot.child("OfferPictureSponsor").getValue().toString());
 
                                 startActivity(it);
                             }

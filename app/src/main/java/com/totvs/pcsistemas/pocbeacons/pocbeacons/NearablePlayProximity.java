@@ -62,7 +62,23 @@ public class NearablePlayProximity extends ActionBarActivity {
             }
         });
 
-        performPlay();
+        if(bundle.containsKey("beaconIdentifier")){
+            try {
+                String beaconIdentifier = bundle.getString("beaconIdentifier");
+                String beaconTitle = bundle.getString("beaconTitle");
+                String beaconPictureUrl = bundle.getString("beaconPictureUrl");
+                String beaconOffer = bundle.getString("Offer");
+                String beaconOfferPictureUrl = bundle.getString("OfferPicture");
+                String beaconOfferSponsor = bundle.getString("OfferSponsor");
+                String beaconOfferPictureSponsorUrl = bundle.getString("OfferPictureSponsor");
+
+                ShowOffer(beaconOfferSponsor, beaconOfferPictureUrl, beaconOffer, beaconOfferPictureSponsorUrl);
+            }catch(Exception e){}
+        }
+        else{
+
+            performPlay();
+        }
 
     }
 
@@ -115,46 +131,7 @@ public class NearablePlayProximity extends ActionBarActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     try {
 
-                        final TextView textViewOfferGreeterProximity = (TextView) findViewById(R.id.textViewOfferGreeterProximity);
-                        textViewOfferGreeterProximity.setText("Hi Rondy!");
-
-                        try {
-                            final TextView textViewOfferSponsorProximity = (TextView) findViewById(R.id.textViewOfferSponsorProximity);
-                            String selectedBeaconOfferSponsor = "Buy a " + snapshot.child("OfferSponsor").getValue().toString();
-                            textViewOfferSponsorProximity.setText(selectedBeaconOfferSponsor);
-                        } catch (Exception e) {
-                            //Toast.makeText(NearablePlayProximity.this, "OfferSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
-                        }
-
-                        try {
-                            final TextView textViewOfferProximity = (TextView) findViewById(R.id.textViewOfferProximity);
-                            String selectedBeaconOffer = "And get a " + snapshot.child("Offer").getValue().toString();
-                            textViewOfferProximity.setText(selectedBeaconOffer);
-                        } catch (Exception e) {
-                            //Toast.makeText(NearablePlayProximity.this, "Offer: " + e.toString(), Toast.LENGTH_LONG).show();
-                        }
-
-                        try{
-                            final ImageView imageViewBeaconProximity = (ImageView) findViewById(R.id.imageViewBeaconProximity);
-                            String selectedBeaconOfferPicturePictureUrl = snapshot.child("OfferPicture").getValue().toString();
-                            imageViewBeaconProximity.setImageResource(R.drawable.no_image_available);
-                            Ion.with(imageViewBeaconProximity)
-                                    .fitCenter()
-                                    .load(selectedBeaconOfferPicturePictureUrl);
-                        } catch (Exception e) {
-                            //Toast.makeText(NearablePlayProximity.this, "OfferPicture: " + e.toString(), Toast.LENGTH_LONG).show();
-                        }
-
-                        try{
-                            final ImageView imageViewBeaconSponsorProximity = (ImageView) findViewById(R.id.imageViewBeaconSponsorProximity);
-                            String selectedBeaconOfferSponsorPictureUrl = snapshot.child("OfferPictureSponsor").getValue().toString();
-                            imageViewBeaconSponsorProximity.setImageResource(R.drawable.no_image_available);
-                            Ion.with(imageViewBeaconSponsorProximity)
-                                    .fitCenter()
-                                    .load(selectedBeaconOfferSponsorPictureUrl);
-                        } catch (Exception e) {
-                            //Toast.makeText(NearablePlayProximity.this, "OfferPictureSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
-                        }
+                        ShowOffer(snapshot.child("OfferSponsor").getValue().toString(), snapshot.child("OfferPicture").getValue().toString(), snapshot.child("Offer").getValue().toString(), snapshot.child("OfferPictureSponsor").getValue().toString());
 
                     } catch (Exception e) {
                         //Toast.makeText(NearablePlayProximity.this, "updateNearableFoundFromFirebase: " + e.toString(), Toast.LENGTH_LONG).show();
@@ -167,6 +144,49 @@ public class NearablePlayProximity extends ActionBarActivity {
                 }
             });
 
+        }
+    }
+
+    private void ShowOffer(String OfferSponsor, String OfferPictureSponsorUrl, String Offer, String OfferPictureUrl){
+        final TextView textViewOfferGreeterProximity = (TextView) findViewById(R.id.textViewOfferGreeterProximity);
+        textViewOfferGreeterProximity.setText("Hi Rondy!");
+
+        try {
+            final TextView textViewOfferSponsorProximity = (TextView) findViewById(R.id.textViewOfferSponsorProximity);
+            String selectedBeaconOfferSponsor = "Buy a " + OfferSponsor;
+            textViewOfferSponsorProximity.setText(selectedBeaconOfferSponsor);
+        } catch (Exception e) {
+            //Toast.makeText(NearablePlayProximity.this, "OfferSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        try {
+            final TextView textViewOfferProximity = (TextView) findViewById(R.id.textViewOfferProximity);
+            String selectedBeaconOffer = "And get a " + Offer;
+            textViewOfferProximity.setText(selectedBeaconOffer);
+        } catch (Exception e) {
+            //Toast.makeText(NearablePlayProximity.this, "Offer: " + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        try{
+            final ImageView imageViewBeaconProximity = (ImageView) findViewById(R.id.imageViewBeaconProximity);
+            String selectedBeaconOfferPicturePictureUrl = OfferPictureUrl;
+            imageViewBeaconProximity.setImageResource(R.drawable.no_image_available);
+            Ion.with(imageViewBeaconProximity)
+                    .fitCenter()
+                    .load(selectedBeaconOfferPicturePictureUrl);
+        } catch (Exception e) {
+            //Toast.makeText(NearablePlayProximity.this, "OfferPicture: " + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        try{
+            final ImageView imageViewBeaconSponsorProximity = (ImageView) findViewById(R.id.imageViewBeaconSponsorProximity);
+            String selectedBeaconOfferSponsorPictureUrl = OfferPictureSponsorUrl;
+            imageViewBeaconSponsorProximity.setImageResource(R.drawable.no_image_available);
+            Ion.with(imageViewBeaconSponsorProximity)
+                    .fitCenter()
+                    .load(selectedBeaconOfferSponsorPictureUrl);
+        } catch (Exception e) {
+            //Toast.makeText(NearablePlayProximity.this, "OfferPictureSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
