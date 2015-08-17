@@ -72,7 +72,11 @@ public class NearablePlayProximity extends ActionBarActivity {
                 String beaconOfferSponsor = bundle.getString("OfferSponsor");
                 String beaconOfferPictureSponsorUrl = bundle.getString("OfferPictureSponsor");
 
-                ShowOffer(beaconOfferSponsor, beaconOfferPictureUrl, beaconOffer, beaconOfferPictureSponsorUrl);
+                ShowOffer(beaconOfferSponsor
+                        , beaconOfferPictureSponsorUrl
+                        , beaconOffer
+                        , beaconOfferPictureUrl
+                );
             }catch(Exception e){}
         }
         else{
@@ -131,7 +135,12 @@ public class NearablePlayProximity extends ActionBarActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     try {
 
-                        ShowOffer(snapshot.child("OfferSponsor").getValue().toString(), snapshot.child("OfferPicture").getValue().toString(), snapshot.child("Offer").getValue().toString(), snapshot.child("OfferPictureSponsor").getValue().toString());
+                        ShowOffer(
+                                    snapshot.child("OfferSponsor").getValue().toString()
+                                  , snapshot.child("OfferPictureSponsor").getValue().toString()
+                                  , snapshot.child("Offer").getValue().toString()
+                                  , snapshot.child("OfferPicture").getValue().toString()
+                        );
 
                     } catch (Exception e) {
                         //Toast.makeText(NearablePlayProximity.this, "updateNearableFoundFromFirebase: " + e.toString(), Toast.LENGTH_LONG).show();
