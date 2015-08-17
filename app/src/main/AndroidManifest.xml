@@ -34,10 +34,6 @@
             android:name=".NearablePlayProximity"
             android:label="@string/title_activity_display_beacon_notification" >
         </activity>
-        <activity
-            android:name=".NearableProximityActivity"
-            android:label="@string/title_activity_nearable_proximity" >
-        </activity>
     </application>
 
 </manifest>

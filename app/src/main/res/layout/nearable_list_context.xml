@@ -38,6 +38,13 @@
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:tag="list_context_description"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_AddToCart"
+                android:id="@+id/btnContextAddToCart"
+                android:tag="list_context_AddToCart"/>
         </LinearLayout>
     </LinearLayout>
 

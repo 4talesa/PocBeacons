@@ -20,4 +20,5 @@
     <string name="lbl_loading">Loading...</string>
     <string name="title_activity_display_beacon_notification">Notification</string>
     <string name="title_activity_nearable_proximity">Nearable Proximity</string>
+    <string name="lbl_AddToCart">Add To Cart</string>
 </resources>

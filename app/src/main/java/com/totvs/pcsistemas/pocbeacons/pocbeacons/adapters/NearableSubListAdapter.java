@@ -2,8 +2,10 @@ package com.totvs.pcsistemas.pocbeacons.pocbeacons.adapters;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Query;
 import com.koushikdutta.ion.Ion;
@@ -35,5 +37,13 @@ public class NearableSubListAdapter extends FirebaseListAdapter<NearableListCont
         Ion.with(imageImageView)
                 .fitCenter()
                 .load(pictureUrl);
+
+        Button btnContextAddToCart = (Button) view.findViewWithTag("list_context_AddToCart");
+        btnContextAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Product add to cart!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

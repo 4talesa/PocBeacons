@@ -54,6 +54,14 @@ public class NearablePlayProximity extends ActionBarActivity {
         // Default values are 5s of scanning and 25s of waiting time to save CPU cycles.
         beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
 
+        final Button btnProximityAddToCart = (Button)findViewById(R.id.btnProximityAddToCart);
+        btnProximityAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(NearablePlayProximity.this, "Product add to cart!", Toast.LENGTH_LONG).show();
+            }
+        });
+
         performPlay();
 
     }
@@ -115,7 +123,7 @@ public class NearablePlayProximity extends ActionBarActivity {
                             String selectedBeaconOfferSponsor = "Buy a " + snapshot.child("OfferSponsor").getValue().toString();
                             textViewOfferSponsorProximity.setText(selectedBeaconOfferSponsor);
                         } catch (Exception e) {
-                            Toast.makeText(NearablePlayProximity.this, "OfferSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(NearablePlayProximity.this, "OfferSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
                         }
 
                         try {
@@ -123,7 +131,7 @@ public class NearablePlayProximity extends ActionBarActivity {
                             String selectedBeaconOffer = "And get a " + snapshot.child("Offer").getValue().toString();
                             textViewOfferProximity.setText(selectedBeaconOffer);
                         } catch (Exception e) {
-                            Toast.makeText(NearablePlayProximity.this, "Offer: " + e.toString(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(NearablePlayProximity.this, "Offer: " + e.toString(), Toast.LENGTH_LONG).show();
                         }
 
                         try{
