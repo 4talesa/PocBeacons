@@ -117,7 +117,7 @@ public class NearablePlayActivity extends ActionBarActivity {
 
                 Firebase mFirebaseBeaconContextList = new Firebase(FIREBASE_URL).child("nearable").child(foundNearable.identifier).child("list");
                 final ListView listViewNearableContext = (ListView) findViewById(R.id.listViewNearableContext);
-                nearableSubListAdapter = new NearableSubListAdapter(mFirebaseBeaconContextList.limit(50), NearablePlayActivity.this, R.layout.nearable_list_context);
+                nearableSubListAdapter = new NearableSubListAdapter(mFirebaseBeaconContextList.limit(50), NearablePlayActivity.this, R.layout.nearable_list_context, FIREBASE_URL);
                 listViewNearableContext.setAdapter(nearableSubListAdapter);
                 nearableSubListAdapter.registerDataSetObserver(new DataSetObserver() {
                     @Override
@@ -176,7 +176,7 @@ public class NearablePlayActivity extends ActionBarActivity {
                         try {
 
                             if (selectedNearable != null && !snapshot.child("Offer").getValue().toString().isEmpty()&& !snapshot.child("OfferPicture").getValue().toString().isEmpty()) {
-                                Intent it = new Intent(NearablePlayActivity.this, NearablePlayProximity.class);
+                                Intent it = new Intent(NearablePlayActivity.this, NearablePlayProximityActivity.class);
 
                                 it.putExtra("FIREBASE_URL",                 FIREBASE_URL);
                                 it.putExtra("beaconIdentifier",             selectedNearable.identifier);

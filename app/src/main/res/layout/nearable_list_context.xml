@@ -14,7 +14,8 @@
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:id="@+id/list_context_image"
-            android:tag="list_context_image" />
+            android:tag="list_context_image"
+            android:src="@drawable/no_image_available"/>
 
         <LinearLayout
             android:orientation="vertical"

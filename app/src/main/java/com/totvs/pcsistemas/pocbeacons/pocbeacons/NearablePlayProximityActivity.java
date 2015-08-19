@@ -3,7 +3,6 @@ package com.totvs.pcsistemas.pocbeacons.pocbeacons;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.*;
@@ -17,9 +16,9 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.koushikdutta.ion.Ion;
-import com.totvs.pcsistemas.pocbeacons.pocbeacons.adapters.NearableSubListAdapter;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.OwnerInfo;
 
-public class NearablePlayProximity extends ActionBarActivity {
+public class NearablePlayProximityActivity extends ActionBarActivity {
 
     private static final String TAG = "NearableProximity";
 
@@ -32,6 +31,8 @@ public class NearablePlayProximity extends ActionBarActivity {
     private String FIREBASE_URL;
     private Firebase mFirebaseRef;
 
+    private OwnerInfo ownerInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,8 @@ public class NearablePlayProximity extends ActionBarActivity {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         //get current date time with Date()
         Date date = new Date();
+
+        ownerInfo = new OwnerInfo(this);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -58,7 +61,7 @@ public class NearablePlayProximity extends ActionBarActivity {
         btnProximityAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(NearablePlayProximity.this, "Product add to cart!", Toast.LENGTH_LONG).show();
+                Toast.makeText(NearablePlayProximityActivity.this, "Product add to cart!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -117,7 +120,7 @@ public class NearablePlayProximity extends ActionBarActivity {
 
     private void updateNearableFoundFromFirebase(Nearable foundNearable) {
 
-        //Toast.makeText(NearablePlayProximity.this, "updateNearableFoundFromFirebase executed", Toast.LENGTH_LONG).show();
+        //Toast.makeText(NearablePlayProximityActivity.this, "updateNearableFoundFromFirebase executed", Toast.LENGTH_LONG).show();
         if (Utils.computeProximity(foundNearable).toString().equals("IMMEDIATE")) {
 
             if (selectedNearable != null && foundNearable != null) {
@@ -143,7 +146,7 @@ public class NearablePlayProximity extends ActionBarActivity {
                         );
 
                     } catch (Exception e) {
-                        //Toast.makeText(NearablePlayProximity.this, "updateNearableFoundFromFirebase: " + e.toString(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(NearablePlayProximityActivity.this, "updateNearableFoundFromFirebase: " + e.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -158,14 +161,14 @@ public class NearablePlayProximity extends ActionBarActivity {
 
     private void ShowOffer(String OfferSponsor, String OfferPictureSponsorUrl, String Offer, String OfferPictureUrl){
         final TextView textViewOfferGreeterProximity = (TextView) findViewById(R.id.textViewOfferGreeterProximity);
-        textViewOfferGreeterProximity.setText("Hi Rondy!");
+        textViewOfferGreeterProximity.setText("Hi " + ownerInfo.name + "!");
 
         try {
             final TextView textViewOfferSponsorProximity = (TextView) findViewById(R.id.textViewOfferSponsorProximity);
             String selectedBeaconOfferSponsor = "Buy a " + OfferSponsor;
             textViewOfferSponsorProximity.setText(selectedBeaconOfferSponsor);
         } catch (Exception e) {
-            //Toast.makeText(NearablePlayProximity.this, "OfferSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(NearablePlayProximityActivity.this, "OfferSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
         }
 
         try {
@@ -173,7 +176,7 @@ public class NearablePlayProximity extends ActionBarActivity {
             String selectedBeaconOffer = "And get a " + Offer;
             textViewOfferProximity.setText(selectedBeaconOffer);
         } catch (Exception e) {
-            //Toast.makeText(NearablePlayProximity.this, "Offer: " + e.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(NearablePlayProximityActivity.this, "Offer: " + e.toString(), Toast.LENGTH_LONG).show();
         }
 
         try{
@@ -184,7 +187,7 @@ public class NearablePlayProximity extends ActionBarActivity {
                     .fitCenter()
                     .load(selectedBeaconOfferPicturePictureUrl);
         } catch (Exception e) {
-            //Toast.makeText(NearablePlayProximity.this, "OfferPicture: " + e.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(NearablePlayProximityActivity.this, "OfferPicture: " + e.toString(), Toast.LENGTH_LONG).show();
         }
 
         try{
@@ -195,7 +198,7 @@ public class NearablePlayProximity extends ActionBarActivity {
                     .fitCenter()
                     .load(selectedBeaconOfferSponsorPictureUrl);
         } catch (Exception e) {
-            //Toast.makeText(NearablePlayProximity.this, "OfferPictureSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(NearablePlayProximityActivity.this, "OfferPictureSponsor: " + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -279,7 +282,7 @@ public class NearablePlayProximity extends ActionBarActivity {
                 beaconManager.setNearableListener(new BeaconManager.NearableListener() {
                     @Override
                     public void onNearablesDiscovered(final List<Nearable> rangedNearables) {
-                        //Toast.makeText(NearablePlayProximity.this, "onNearablesDiscovered triggered", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(NearablePlayProximityActivity.this, "onNearablesDiscovered triggered", Toast.LENGTH_LONG).show();
                         // Note that results are not delivered on UI thread.
                         runOnUiThread(new Runnable() {
                             @Override

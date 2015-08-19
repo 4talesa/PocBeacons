@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="#ffffffff">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/list_check_in_image"
+            android:tag="list_check_in_image"
+            android:src="@drawable/no_image_available"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/list_check_in_table_lbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_Table"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:tag="list_check_in_table_lbl"/>
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_check_in_table"
+                    android:maxLength="3"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:tag="list_check_in_table"
+                    android:paddingLeft="5dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/list_check_in_status_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_Status"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:tag="list_check_in_status_lbl"/>
+                    <TextView
+                        android:id="@+id/list_check_in_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_loading"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:tag="list_check_in_status"
+                        android:paddingLeft="5dp" />
+                </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/list_check_in_beaconIdentifier_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_Beacon"
+                        android:textStyle="bold"
+                        android:textSize="12dp"
+                        android:tag="list_check_in_beaconIdentifier_lbl"
+                        android:visibility="invisible"/>
+
+                    <TextView
+                        android:id="@+id/list_check_in_beaconIdentifier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_loading"
+                        android:textStyle="bold"
+                        android:textSize="12dp"
+                        android:tag="list_check_in_beaconIdentifier"
+                        android:visibility="invisible"
+                        android:paddingLeft="5dp" />
+
+                </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/list_check_in_customerName_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_Customer"
+            android:textStyle="bold"
+            android:textSize="35dp"
+            android:tag="list_check_in_customerName_lbl"/>
+
+        <TextView
+                android:id="@+id/list_check_in_customerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_loading"
+                android:textStyle="bold"
+                android:textSize="35dp"
+                android:tag="list_check_in_customerName"/>
+
+        <TextView
+            android:id="@+id/list_check_in_transaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_loading"
+            android:textStyle="bold"
+            android:textSize="12dp"
+            android:tag="list_check_in_transaction"
+            android:visibility="invisible"
+            android:paddingLeft="5dp" />
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_CheckIn"
+                android:id="@+id/btnCheckIn"
+                android:tag="list_check_in_check_in"/>
+    </LinearLayout>
+
+</LinearLayout>

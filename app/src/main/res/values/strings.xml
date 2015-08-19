@@ -21,4 +21,12 @@
     <string name="title_activity_display_beacon_notification">Notification</string>
     <string name="title_activity_nearable_proximity">Nearable Proximity</string>
     <string name="lbl_AddToCart">Add To Cart</string>
+    <string name="title_activity_nearable_play_check_in">NearablePlayCheckIn</string>
+    <string name="title_activity_nearable_play_restaurant">NearablePlayRestaurant</string>
+    <string name="lbl_CheckIn">Check In</string>
+    <string name="lbl_CheckOut">Check Out</string>
+    <string name="lbl_Table">Table:</string>
+    <string name="lbl_Customer">Customer:</string>
+    <string name="lbl_Status">Status:</string>
+    <string name="lbl_Beacon">Beacon:</string>
 </resources>

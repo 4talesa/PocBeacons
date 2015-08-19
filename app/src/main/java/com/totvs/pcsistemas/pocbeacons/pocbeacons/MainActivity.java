@@ -64,7 +64,31 @@ public class MainActivity extends ActionBarActivity{
         btnPlayNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(MainActivity.this, NearablePlayProximity.class);
+                Intent it = new Intent(MainActivity.this, NearablePlayProximityActivity.class);
+
+                it.putExtra("FIREBASE_URL", FIREBASE_URL);
+
+                startActivity(it);
+            }
+        });
+
+        final ImageButton btnCheckin = (ImageButton)findViewById(R.id.btnCheckin);
+        btnCheckin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(MainActivity.this, NearablePlayCheckInActivity.class);
+
+                it.putExtra("FIREBASE_URL", FIREBASE_URL);
+
+                startActivity(it);
+            }
+        });
+
+        final ImageButton btnPlayRestaurant = (ImageButton)findViewById(R.id.btnPlayRestaurant);
+        btnPlayRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(MainActivity.this, NearablePlayRestaurantActivity.class);
 
                 it.putExtra("FIREBASE_URL", FIREBASE_URL);
 

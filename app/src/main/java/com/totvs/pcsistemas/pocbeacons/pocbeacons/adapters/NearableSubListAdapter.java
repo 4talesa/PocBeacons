@@ -17,8 +17,8 @@ import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.NearableListContext;
  */
 public class NearableSubListAdapter extends FirebaseListAdapter<NearableListContext>{
 
-    public NearableSubListAdapter(Query ref, Activity activity, int layout) {
-        super(ref, NearableListContext.class, layout, activity);
+    public NearableSubListAdapter(Query ref, Activity activity, int layout, String fireBase_url) {
+        super(ref, NearableListContext.class, layout, activity, fireBase_url);
     }
 
     @Override

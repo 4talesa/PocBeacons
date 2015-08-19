@@ -26,6 +26,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
     private List<T> mModels;
     private List<String> mKeys;
     private ChildEventListener mListener;
+    private String fireBase_url;
 
 
     /**
@@ -36,13 +37,14 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
      *                    instance of the corresponding view with the data from an instance of mModelClass.
      * @param activity    The activity containing the ListView
      */
-    public FirebaseListAdapter(Query mRef, Class<T> mModelClass, int mLayout, Activity activity) {
+    public FirebaseListAdapter(Query mRef, Class<T> mModelClass, int mLayout, Activity activity, String fireBase_url) {
         this.mRef = mRef;
         this.mModelClass = mModelClass;
         this.mLayout = mLayout;
         mInflater = activity.getLayoutInflater();
         mModels = new ArrayList<T>();
         mKeys = new ArrayList<String>();
+        this.fireBase_url = fireBase_url;
         // Look for all child events. We will then map them to our own internal ArrayList, which backs ListView
         mListener = this.mRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -161,6 +163,10 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter {
         // Call out to subclass to marshall this model into the provided view
         populateView(view, model);
         return view;
+    }
+
+    public String getFireBase_url(){
+        return fireBase_url;
     }
 
     /**

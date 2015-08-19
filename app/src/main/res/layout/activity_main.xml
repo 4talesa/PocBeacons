@@ -90,6 +90,30 @@
             android:layout_weight="1" />
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+            <ImageButton
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/btnCheckin"
+                android:background="#00000000"
+                android:scaleType="fitCenter"
+                android:src="@drawable/facebook_places_logo"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/btnPlayRestaurant"
+                android:background="#00000000"
+                android:scaleType="fitCenter"
+                android:src="@drawable/btnsimple_restaurant"
+                android:layout_weight="1" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
