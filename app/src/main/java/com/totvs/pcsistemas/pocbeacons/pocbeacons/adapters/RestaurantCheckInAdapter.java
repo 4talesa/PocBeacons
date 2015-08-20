@@ -1,6 +1,8 @@
 package com.totvs.pcsistemas.pocbeacons.pocbeacons.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.firebase.client.Query;
 import com.koushikdutta.ion.Ion;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.MainActivity;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.NearablePlayRestaurantCheckInActivity;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.R;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.RestaurantCheckIn;
 
@@ -30,14 +34,13 @@ public class RestaurantCheckInAdapter extends FirebaseListAdapter<RestaurantChec
 
     @Override
     protected void populateView(View view, RestaurantCheckIn model) {
-        // Map a Chat object to an entry in our listview
 
         String transaction = model.getTransaction();
         TextView transactionText = (TextView) view.findViewWithTag("list_check_in_transaction");
         transactionText.setText(transaction);
 
         String table = model.getTable();
-        EditText tableText = (EditText) view.findViewWithTag("list_check_in_table");
+        TextView tableText = (TextView) view.findViewWithTag("list_check_in_table");
         tableText.setText(table);
 
         String beaconIdentifier = model.getBeaconIdentifier();
@@ -58,42 +61,39 @@ public class RestaurantCheckInAdapter extends FirebaseListAdapter<RestaurantChec
                 .fitCenter()
                 .load(pictureUrl);
 
-        Button btnCheckIn = (Button) view.findViewWithTag("list_check_in_check_in");
-        if (status.equals("CheckInRequested")){
-            btnCheckIn.setText("Check In to " + customerName);
-            btnCheckIn.setOnClickListener(new View.OnClickListener() {
+        if (status.equals(view.getResources().getString(R.string.lbl_CheckInRequest))){
+            view.setBackgroundColor(Color.parseColor("#b7fea0"));
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
-                        TextView transactionText = (TextView) ((View) v.getParent()).findViewWithTag("list_check_in_transaction");
+                        TextView transactionText = (TextView) v.findViewWithTag("list_check_in_transaction");
 
-                        Firebase mFirebaseCheckIn = new Firebase(getFireBase_url()).child("checkin").child(transactionText.getText().toString());
+                        Intent it = new Intent(v.getContext(), NearablePlayRestaurantCheckInActivity.class);
 
-                        Map<String, Object> updates = new HashMap<String, Object>();
+                        it.putExtra("FIREBASE_URL", getFireBase_url());
+                        it.putExtra("transaction", transactionText.getText().toString());
 
-                        updates.put("status", "CheckInSucess");
-                        updates.put("table", (int)(Math.random() * 99) + 1);
-                        mFirebaseCheckIn.updateChildren(updates);
-                        //Toast.makeText(v.getContext(), "Check In Id " + transactionText.getText(), Toast.LENGTH_LONG).show();
+                        v.getContext().startActivity(it);
                     }catch (Exception e){
 
                     }
                 }
             });
         }
-        else if (status.equals("CheckOutRequested")){
-            btnCheckIn.setText("Check Out to " + customerName);
-            btnCheckIn.setOnClickListener(new View.OnClickListener() {
+        else if (status.equals(view.getResources().getString(R.string.lbl_CheckOutRequest))){
+            view.setBackgroundColor(Color.parseColor("#ffb732"));
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
-                        TextView transactionText = (TextView) ((View) v.getParent()).findViewWithTag("list_check_in_transaction");
+                        TextView transactionText = (TextView) v.findViewWithTag("list_check_in_transaction");
 
                         Firebase mFirebaseCheckIn = new Firebase(getFireBase_url()).child("checkin").child(transactionText.getText().toString());
 
                         Map<String, Object> updates = new HashMap<String, Object>();
 
-                        updates.put("status", "CheckOutSucess");
+                        updates.put("status", v.getResources().getString(R.string.lbl_CheckOutSucess));
                         mFirebaseCheckIn.updateChildren(updates);
                         //Toast.makeText(v.getContext(), "Check Out Id " + transactionText.getText(), Toast.LENGTH_LONG).show();
                     }catch (Exception e){
@@ -103,11 +103,11 @@ public class RestaurantCheckInAdapter extends FirebaseListAdapter<RestaurantChec
             });
         }
         else {
-            btnCheckIn.setText("Not available");
-            btnCheckIn.setOnClickListener(new View.OnClickListener() {
+            view.setBackgroundColor(Color.parseColor("#e2e2e2"));
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Not available", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(v.getContext(), "Not available", Toast.LENGTH_LONG).show();
                 }
             });
         }

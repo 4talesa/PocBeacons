@@ -23,7 +23,7 @@ public class NearableSubListAdapter extends FirebaseListAdapter<NearableListCont
 
     @Override
     protected void populateView(View view, NearableListContext model) {
-        // Map a Chat object to an entry in our listview
+
         String title = model.getTitle();
         TextView titleText = (TextView) view.findViewWithTag("list_context_title");
         titleText.setText(title);

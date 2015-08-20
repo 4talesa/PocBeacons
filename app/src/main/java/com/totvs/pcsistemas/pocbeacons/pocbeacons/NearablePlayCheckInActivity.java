@@ -24,7 +24,9 @@ import com.koushikdutta.ion.Ion;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.OwnerInfo;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.RestaurantCheckIn;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import java.util.UUID;
@@ -41,6 +43,7 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
     private Nearable selectedNearable = null;
 
     private String FIREBASE_URL;
+    private RestaurantCheckIn checkIn;
 
     private OwnerInfo ownerInfo;
 
@@ -63,10 +66,21 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
         beaconManager.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 0);
 
         final Button btnCheckOut = (Button)findViewById(R.id.btnCheckOut);
+        btnCheckOut.setText("Not available");
         btnCheckOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(NearablePlayCheckInActivity.this, "Not available", Toast.LENGTH_LONG).show();
+
+                if (checkIn.getStatus().equals(getResources().getString(R.string.lbl_CheckInSucess))) {
+                    Firebase mFirebaseCheckIn = new Firebase(FIREBASE_URL).child("checkin").child(checkIn.getTransaction());
+
+                    Map<String, Object> updates = new HashMap<String, Object>();
+
+                    updates.put("status", getResources().getString(R.string.lbl_CheckOutRequest));
+                    mFirebaseCheckIn.updateChildren(updates);
+
+                    Toast.makeText(NearablePlayCheckInActivity.this, "Check out requested", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -117,10 +131,12 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
 
             selectedNearable = foundNearable;
 
-            final TextView textViewCheckStatus = (TextView) findViewById(R.id.check_in_status);
-            textViewCheckStatus.setText("checkInRequested");
-
-            RestaurantCheckIn checkIn = new RestaurantCheckIn("0", selectedNearable.identifier, "http://lorempixel.com/75/75/people/", "checkInRequested", ownerInfo.name, UUID.randomUUID().toString());
+            checkIn = new RestaurantCheckIn("0"
+                    , selectedNearable.identifier
+                    , "http://lorempixel.com/75/75/people/"
+                    , getResources().getString(R.string.lbl_CheckInRequest)
+                    , ownerInfo.name
+                    , UUID.randomUUID().toString());
             Firebase mFirebaseCheckInRequest = new Firebase(FIREBASE_URL).child("checkin").child(checkIn.getTransaction());
             mFirebaseCheckInRequest.setValue(checkIn);
 
@@ -129,7 +145,7 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     try {
 
-                        RestaurantCheckIn checkIn = snapshot.getValue(RestaurantCheckIn.class);
+                        checkIn = snapshot.getValue(RestaurantCheckIn.class);
 
                         final TextView textViewCheckInTable = (TextView) findViewById(R.id.check_in_table);
                         textViewCheckInTable.setText(checkIn.getTable());
@@ -148,6 +164,13 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
                         Ion.with(imageViewCheckIn)
                                 .fitCenter()
                                 .load(checkIn.getPictureUrl());
+
+                        final Button btnCheckOut = (Button)findViewById(R.id.btnCheckOut);
+                        if (checkIn.getStatus().equals(getResources().getString(R.string.lbl_CheckInSucess))){
+                            btnCheckOut.setText("Check Out");
+                        }else{
+                            btnCheckOut.setText("Not available");
+                        }
 
                     } catch (Exception e) {
                         //Toast.makeText(NearablePlayProximityActivity.this, "updateNearableFoundFromFirebase: " + e.toString(), Toast.LENGTH_LONG).show();

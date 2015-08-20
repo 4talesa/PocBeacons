@@ -45,6 +45,10 @@
             android:name=".NearablePlayRestaurantActivity"
             android:label="@string/title_activity_nearable_play_restaurant" >
         </activity>
+        <activity
+            android:name=".NearablePlayRestaurantCheckInActivity"
+            android:label="@string/title_activity_nearable_play_restaurant_check_in" >
+        </activity>
     </application>
 
 </manifest>
