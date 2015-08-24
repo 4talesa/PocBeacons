@@ -21,6 +21,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.koushikdutta.ion.Ion;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.drivers.FirebaseConn;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.OwnerInfo;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.RestaurantCheckIn;
 
@@ -42,7 +43,6 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
     private String scanId;
     private Nearable selectedNearable = null;
 
-    private String FIREBASE_URL;
     private RestaurantCheckIn checkIn;
 
     private OwnerInfo ownerInfo;
@@ -54,10 +54,6 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
         Firebase.setAndroidContext(this);
 
         Bundle bundle = getIntent().getExtras();
-
-        if(bundle.containsKey("FIREBASE_URL")){
-            FIREBASE_URL = bundle.getString("FIREBASE_URL");
-        }
 
         //Initialize Beacon Manager
         beaconManager = new BeaconManager(this);
@@ -72,7 +68,7 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
             public void onClick(View v) {
 
                 if (checkIn.getStatus().equals(getResources().getString(R.string.lbl_CheckInSucess))) {
-                    Firebase mFirebaseCheckIn = new Firebase(FIREBASE_URL).child("checkin").child(checkIn.getTransaction());
+                    Firebase mFirebaseCheckIn = new FirebaseConn().child("checkin").child(checkIn.getTransaction());
 
                     Map<String, Object> updates = new HashMap<String, Object>();
 
@@ -138,7 +134,7 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
                     , ownerInfo.name
                     , UUID.randomUUID().toString()
                     , 0.00);
-            Firebase mFirebaseCheckInRequest = new Firebase(FIREBASE_URL).child("checkin").child(checkIn.getTransaction());
+            Firebase mFirebaseCheckInRequest = new FirebaseConn().child("checkin").child(checkIn.getTransaction());
             mFirebaseCheckInRequest.setValue(checkIn);
 
             mFirebaseCheckInRequest.addValueEventListener(new ValueEventListener() {

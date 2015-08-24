@@ -19,6 +19,7 @@ import com.estimote.sdk.EstimoteSDK;
 import com.estimote.sdk.Region;
 import com.firebase.client.*;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.adapters.BeaconListAdapter;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.drivers.FirebaseConn;
 
 import java.text.*;
 import java.util.*;
@@ -35,7 +36,6 @@ public class BeaconListActivity extends ActionBarActivity {
     private BeaconManager beaconManager;
     private BeaconListAdapter adapter;
 
-    private String FIREBASE_URL;
     public Firebase mFirebaseRef;
 
     @Override
@@ -50,12 +50,6 @@ public class BeaconListActivity extends ActionBarActivity {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         //get current date time with Date()
         Date date = new Date();
-
-        if(bundle.containsKey("FIREBASE_URL")){
-            FIREBASE_URL = bundle.getString("FIREBASE_URL");
-            //Firebase mFirebaseRef = new Firebase(FIREBASE_URL).child("log");
-            //mFirebaseRef.setValue(TAG + " says test " + dateFormat.format(date));
-        }
 
         // Configure device list.
         adapter = new BeaconListAdapter(this);
@@ -99,7 +93,7 @@ public class BeaconListActivity extends ActionBarActivity {
         try{
             //Toast.makeText(this, "I found beacon MacAddress: "+foundBeacon.getMacAddress(), Toast.LENGTH_LONG).show();
 
-            Firebase mFirebaseInputBeacon = new Firebase(FIREBASE_URL).child("beacon").child(foundBeacon.getProximityUUID());
+            Firebase mFirebaseInputBeacon = new FirebaseConn().child("beacon").child(foundBeacon.getProximityUUID());
             Map<String, Object> updates = new HashMap<String, Object>();
             updates.put("proximityUUID", foundBeacon.getProximityUUID());
             updates.put("macAddress", foundBeacon.getMacAddress());

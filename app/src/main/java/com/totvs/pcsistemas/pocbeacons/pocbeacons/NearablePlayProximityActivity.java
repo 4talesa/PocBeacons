@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.koushikdutta.ion.Ion;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.drivers.FirebaseConn;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.OwnerInfo;
 
 public class NearablePlayProximityActivity extends ActionBarActivity {
@@ -27,9 +28,6 @@ public class NearablePlayProximityActivity extends ActionBarActivity {
     private BeaconManager beaconManager;
     private String scanId;
     private Nearable selectedNearable = null;
-
-    private String FIREBASE_URL;
-    private Firebase mFirebaseRef;
 
     private OwnerInfo ownerInfo;
 
@@ -46,10 +44,6 @@ public class NearablePlayProximityActivity extends ActionBarActivity {
         ownerInfo = new OwnerInfo(this);
 
         Bundle bundle = getIntent().getExtras();
-
-        if(bundle.containsKey("FIREBASE_URL")){
-            FIREBASE_URL = bundle.getString("FIREBASE_URL");
-        }
 
         //Initialize Beacon Manager
         beaconManager = new BeaconManager(this);
@@ -131,7 +125,7 @@ public class NearablePlayProximityActivity extends ActionBarActivity {
 
             selectedNearable = foundNearable;
 
-            Firebase mFirebaseIncomingBeacon = new Firebase(FIREBASE_URL).child("nearable").child(foundNearable.identifier);
+            Firebase mFirebaseIncomingBeacon = new FirebaseConn().child("nearable").child(foundNearable.identifier);
 
             mFirebaseIncomingBeacon.addValueEventListener(new ValueEventListener() {
                 @Override

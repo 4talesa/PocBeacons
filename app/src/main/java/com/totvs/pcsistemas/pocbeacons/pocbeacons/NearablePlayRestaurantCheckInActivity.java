@@ -20,6 +20,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.koushikdutta.ion.Ion;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.drivers.FirebaseConn;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.RestaurantCheckIn;
 
 import java.text.DateFormat;
@@ -31,7 +32,6 @@ import java.util.Map;
 
 public class NearablePlayRestaurantCheckInActivity extends ActionBarActivity {
 
-    private String FIREBASE_URL;
     private String transaction;
     private RestaurantCheckIn checkInEdit = new RestaurantCheckIn(0, "", "", "", "", "", 0.00);
 
@@ -46,14 +46,10 @@ public class NearablePlayRestaurantCheckInActivity extends ActionBarActivity {
 
         Bundle bundle = getIntent().getExtras();
 
-        if(bundle.containsKey("FIREBASE_URL")){
-            FIREBASE_URL = bundle.getString("FIREBASE_URL");
-        }
-
         if(bundle.containsKey("transaction")){
             transaction = bundle.getString("transaction");
 
-            Firebase mFirebaseCheckInRequest = new Firebase(FIREBASE_URL).child("checkin").child(transaction);
+            Firebase mFirebaseCheckInRequest = new FirebaseConn().child("checkin").child(transaction);
 
             mFirebaseCheckInRequest.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -165,7 +161,7 @@ public class NearablePlayRestaurantCheckInActivity extends ActionBarActivity {
                             @Override
                             public void onClick(View v) {
                                 try {
-                                    Firebase mFirebaseCheckIn = new Firebase(FIREBASE_URL).child("checkin").child(transaction);
+                                    Firebase mFirebaseCheckIn = new FirebaseConn().child("checkin").child(transaction);
 
                                     Map<String, Object> updates = new HashMap<String, Object>();
 

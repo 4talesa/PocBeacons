@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity{
 
     private ImageButton btnListBeacons;
     private ImageButton btnListNearables;
-    private static final String FIREBASE_URL = "https://pocbeacons.firebaseio.com/";
+
     private static final String ESTIMOTEAPPID = "pocbeacons";
     private static final String ESTIMOTETOKEN = "1c9283b168671ce2a55c07095a9ac983";
 
@@ -31,8 +31,6 @@ public class MainActivity extends ActionBarActivity{
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, BeaconListActivity.class);
 
-                it.putExtra("FIREBASE_URL", FIREBASE_URL);
-
                 startActivity(it);
             }
         });
@@ -41,8 +39,6 @@ public class MainActivity extends ActionBarActivity{
         btnListNearables.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, NearableListActivity.class);
-
-                it.putExtra("FIREBASE_URL", FIREBASE_URL);
 
                 startActivity(it);
             }
@@ -54,8 +50,6 @@ public class MainActivity extends ActionBarActivity{
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, NearablePlayActivity.class);
 
-                it.putExtra("FIREBASE_URL", FIREBASE_URL);
-
                 startActivity(it);
             }
         });
@@ -65,8 +59,6 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, NearablePlayProximityActivity.class);
-
-                it.putExtra("FIREBASE_URL", FIREBASE_URL);
 
                 startActivity(it);
             }
@@ -78,8 +70,6 @@ public class MainActivity extends ActionBarActivity{
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, NearablePlayCheckInActivity.class);
 
-                it.putExtra("FIREBASE_URL", FIREBASE_URL);
-
                 startActivity(it);
             }
         });
@@ -89,8 +79,6 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(MainActivity.this, NearablePlayRestaurantActivity.class);
-
-                it.putExtra("FIREBASE_URL", FIREBASE_URL);
 
                 startActivity(it);
             }

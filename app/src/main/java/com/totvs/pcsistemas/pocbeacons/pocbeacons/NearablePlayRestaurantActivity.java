@@ -9,13 +9,13 @@ import android.widget.ListView;
 
 import com.firebase.client.Firebase;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.adapters.RestaurantCheckInAdapter;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.drivers.FirebaseConn;
 
 
 public class NearablePlayRestaurantActivity extends ActionBarActivity {
 
     private static final String TAG = "NearablePlayRestaurantActivity";
 
-    private String FIREBASE_URL;
     RestaurantCheckInAdapter adapter;
 
     @Override
@@ -27,13 +27,9 @@ public class NearablePlayRestaurantActivity extends ActionBarActivity {
 
         Bundle bundle = getIntent().getExtras();
 
-        if(bundle.containsKey("FIREBASE_URL")){
-            FIREBASE_URL = bundle.getString("FIREBASE_URL");
-        }
-
-        Firebase mFirebaseCheckIn = new Firebase(FIREBASE_URL).child("checkin");
+        Firebase mFirebaseCheckIn = new FirebaseConn().child("checkin");
         final ListView listTables = (ListView) findViewById(R.id.listTables);
-        adapter = new RestaurantCheckInAdapter(mFirebaseCheckIn.limit(50), NearablePlayRestaurantActivity.this, R.layout.restaurant_check_in_item, FIREBASE_URL);
+        adapter = new RestaurantCheckInAdapter(mFirebaseCheckIn.limit(50), NearablePlayRestaurantActivity.this, R.layout.restaurant_check_in_item, FirebaseConn.getFirebase_url());
         listTables.setAdapter(adapter);
         adapter.registerDataSetObserver(new DataSetObserver() {
             @Override

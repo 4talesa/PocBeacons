@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.koushikdutta.ion.Ion;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.drivers.FirebaseConn;
 
 public class NearableListActivity extends ActionBarActivity {
 
@@ -38,7 +39,6 @@ public class NearableListActivity extends ActionBarActivity {
     private String scanId;
     private EstimoteCloud estimoteCloud;
 
-    private String FIREBASE_URL;
     public Firebase mFirebaseRef;
 
     @Override
@@ -52,12 +52,6 @@ public class NearableListActivity extends ActionBarActivity {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         //get current date time with Date()
         Date date = new Date();
-
-        if(bundle.containsKey("FIREBASE_URL")){
-            FIREBASE_URL = bundle.getString("FIREBASE_URL");
-            //Firebase mFirebaseRef = new Firebase(FIREBASE_URL).child("log");
-            //mFirebaseRef.setValue(TAG + " says test " + dateFormat.format(date));
-        }
 
         //Initialize Beacon Manager
         beaconManager = new BeaconManager(this);
@@ -109,7 +103,7 @@ public class NearableListActivity extends ActionBarActivity {
         try{
             //Toast.makeText(this, "I found nearable Identifier: "+foundNearable.identifier, Toast.LENGTH_LONG).show();
 
-            Firebase mFirebaseInputBeacon = new Firebase(FIREBASE_URL).child("nearable").child(foundNearable.identifier);
+            Firebase mFirebaseInputBeacon = new FirebaseConn().child("nearable").child(foundNearable.identifier);
 
             Map<String, Object> updates = new HashMap<String, Object>();
 
@@ -134,7 +128,7 @@ public class NearableListActivity extends ActionBarActivity {
 
                             @Override
                             public void success(NearableInfo nearableInfo) {
-                                Firebase mFirebaseInputBeacon = new Firebase(FIREBASE_URL).child("nearable").child(nearableInfo.identifier);
+                                Firebase mFirebaseInputBeacon = new FirebaseConn().child("nearable").child(nearableInfo.identifier);
                                 Map<String, Object> updates = new HashMap<String, Object>();
                                 updates.put("Identifier", nearableInfo.identifier);
                                 updates.put("Identifier Type", nearableInfo.type.toString());
@@ -247,7 +241,7 @@ public class NearableListActivity extends ActionBarActivity {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Nearable nearableClicked = (Nearable)adapter.getItem(position);
                 //Create a list item
-                Firebase mFirebaseInputBeacon = new Firebase(FIREBASE_URL).child("nearable").child(nearableClicked.identifier).child("list").push();
+                Firebase mFirebaseInputBeacon = new FirebaseConn().child("nearable").child(nearableClicked.identifier).child("list").push();
                 Map<String, Object> updates = new HashMap<String, Object>();
 
                 updates.put("title", "Title "+ (int)(Math.random() * 999)+1);

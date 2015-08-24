@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.koushikdutta.ion.Ion;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.adapters.NearableSubListAdapter;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.drivers.FirebaseConn;
 
 public class NearablePlayActivity extends ActionBarActivity {
 
@@ -29,8 +30,6 @@ public class NearablePlayActivity extends ActionBarActivity {
     private String scanId;
     private Nearable selectedNearable = null;
 
-    private String FIREBASE_URL;
-    private Firebase mFirebaseRef;
     private NearableSubListAdapter nearableSubListAdapter;
 
     private boolean offerShow = false;
@@ -46,10 +45,6 @@ public class NearablePlayActivity extends ActionBarActivity {
         Date date = new Date();
 
         Bundle bundle = getIntent().getExtras();
-
-        if(bundle.containsKey("FIREBASE_URL")){
-            FIREBASE_URL = bundle.getString("FIREBASE_URL");
-        }
 
         //Initialize Beacon Manager
         beaconManager = new BeaconManager(this);
@@ -115,9 +110,9 @@ public class NearablePlayActivity extends ActionBarActivity {
                 selectedNearable = foundNearable;
                 evaluateBeaconProximity(foundNearable);
 
-                Firebase mFirebaseBeaconContextList = new Firebase(FIREBASE_URL).child("nearable").child(foundNearable.identifier).child("list");
+                Firebase mFirebaseBeaconContextList = new FirebaseConn().child("nearable").child(foundNearable.identifier).child("list");
                 final ListView listViewNearableContext = (ListView) findViewById(R.id.listViewNearableContext);
-                nearableSubListAdapter = new NearableSubListAdapter(mFirebaseBeaconContextList.limit(50), NearablePlayActivity.this, R.layout.nearable_list_context, FIREBASE_URL);
+                nearableSubListAdapter = new NearableSubListAdapter(mFirebaseBeaconContextList.limit(50), NearablePlayActivity.this, R.layout.nearable_list_context, FirebaseConn.getFirebase_url());
                 listViewNearableContext.setAdapter(nearableSubListAdapter);
                 nearableSubListAdapter.registerDataSetObserver(new DataSetObserver() {
                     @Override
@@ -127,7 +122,7 @@ public class NearablePlayActivity extends ActionBarActivity {
                     }
                 });
 
-                Firebase mFirebaseIncomingBeacon = new Firebase(FIREBASE_URL).child("nearable").child(foundNearable.identifier);
+                Firebase mFirebaseIncomingBeacon = new FirebaseConn().child("nearable").child(foundNearable.identifier);
 
                 mFirebaseIncomingBeacon.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -168,7 +163,7 @@ public class NearablePlayActivity extends ActionBarActivity {
             if (Utils.computeProximity(foundNearable).toString().equals("IMMEDIATE")) {
 
                 offerShow = true;
-                Firebase mFirebaseIncomingBeacon = new Firebase(FIREBASE_URL).child("nearable").child(foundNearable.identifier);
+                Firebase mFirebaseIncomingBeacon = new FirebaseConn().child("nearable").child(foundNearable.identifier);
 
                 mFirebaseIncomingBeacon.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -178,7 +173,6 @@ public class NearablePlayActivity extends ActionBarActivity {
                             if (selectedNearable != null && !snapshot.child("Offer").getValue().toString().isEmpty()&& !snapshot.child("OfferPicture").getValue().toString().isEmpty()) {
                                 Intent it = new Intent(NearablePlayActivity.this, NearablePlayProximityActivity.class);
 
-                                it.putExtra("FIREBASE_URL",                 FIREBASE_URL);
                                 it.putExtra("beaconIdentifier",             selectedNearable.identifier);
                                 it.putExtra("beaconTitle",                  snapshot.child("Description").getValue().toString());
                                 it.putExtra("beaconPictureUrl",             snapshot.child("Picture").getValue().toString());
