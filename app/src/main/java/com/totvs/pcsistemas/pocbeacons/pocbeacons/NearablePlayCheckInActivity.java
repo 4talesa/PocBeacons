@@ -131,12 +131,13 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
 
             selectedNearable = foundNearable;
 
-            checkIn = new RestaurantCheckIn("0"
+            checkIn = new RestaurantCheckIn(0
                     , selectedNearable.identifier
-                    , "http://lorempixel.com/75/75/people/"
+                    , "http://dadrix.com.br/apps/image/prof_pic.jpg"
                     , getResources().getString(R.string.lbl_CheckInRequest)
                     , ownerInfo.name
-                    , UUID.randomUUID().toString());
+                    , UUID.randomUUID().toString()
+                    , 0.00);
             Firebase mFirebaseCheckInRequest = new Firebase(FIREBASE_URL).child("checkin").child(checkIn.getTransaction());
             mFirebaseCheckInRequest.setValue(checkIn);
 
@@ -148,7 +149,7 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
                         checkIn = snapshot.getValue(RestaurantCheckIn.class);
 
                         final TextView textViewCheckInTable = (TextView) findViewById(R.id.check_in_table);
-                        textViewCheckInTable.setText(checkIn.getTable());
+                        textViewCheckInTable.setText(checkIn.getTable().toString());
 
                         final TextView textViewBeaconIdentifier = (TextView) findViewById(R.id.check_in_beaconIdentifier);
                         textViewBeaconIdentifier.setText(checkIn.getBeaconIdentifier());
@@ -158,6 +159,9 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
 
                         final TextView textViewCustomerName = (TextView) findViewById(R.id.check_in_customerName);
                         textViewCustomerName.setText(checkIn.getCustomerName());
+
+                        final TextView textViewBill = (TextView) findViewById(R.id.check_in_bill);
+                        textViewBill.setText(checkIn.getBill().toString());
 
                         final ImageView imageViewCheckIn = (ImageView) findViewById(R.id.check_in_image);
                         imageViewCheckIn.setImageResource(R.drawable.keep_calm_and_wait);

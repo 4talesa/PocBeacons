@@ -18,6 +18,7 @@
     <string name="title_activity_nearable_list">Nearable List</string>
     <string name="title_activity_nearable_play">Nearable Play</string>
     <string name="lbl_loading">Loading...</string>
+    <string name="lbl_loading_number">000</string>
     <string name="title_activity_display_beacon_notification">Notification</string>
     <string name="title_activity_nearable_proximity">Nearable Proximity</string>
     <string name="lbl_AddToCart">Add To Cart</string>
@@ -25,6 +26,7 @@
     <string name="title_activity_nearable_play_restaurant">Play Restaurant</string>
     <string name="lbl_CheckIn">Check In</string>
     <string name="lbl_CheckOut">Check Out</string>
+    <string name="lbl_CheckInConfirmation">Confirm</string>
     <string name="lbl_Table">Table:</string>
     <string name="lbl_Customer">Customer:</string>
     <string name="lbl_Status">Status:</string>
@@ -36,4 +38,9 @@
     <string name="lbl_CheckOutRequest">CheckOutRequest</string>
     <string name="lbl_CheckOutSucess">CheckOutSucess</string>
     <string name="lbl_Wellcome">Wellcome</string>
+    <string name="lbl_Bill">Bill:</string>
+    <string name="color_bg_CheckInRequest">#b7fea0</string>
+    <string name="color_bg_CheckOutRequest">#ffb732</string>
+    <string name="color_bg_CheckInSucess">#e2e2e2</string>
+    <string name="color_bg_CheckOutSucess">#e2e2e2</string>
 </resources>

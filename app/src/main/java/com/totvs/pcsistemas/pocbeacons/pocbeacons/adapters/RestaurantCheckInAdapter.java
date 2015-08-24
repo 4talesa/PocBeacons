@@ -39,7 +39,7 @@ public class RestaurantCheckInAdapter extends FirebaseListAdapter<RestaurantChec
         TextView transactionText = (TextView) view.findViewWithTag("list_check_in_transaction");
         transactionText.setText(transaction);
 
-        String table = model.getTable();
+        String table = model.getTable().toString();
         TextView tableText = (TextView) view.findViewWithTag("list_check_in_table");
         tableText.setText(table);
 
@@ -50,6 +50,10 @@ public class RestaurantCheckInAdapter extends FirebaseListAdapter<RestaurantChec
         String status = model.getStatus();
         TextView statusText = (TextView) view.findViewWithTag("list_check_in_status");
         statusText.setText(status);
+
+        String bill = model.getBill().toString();
+        TextView billText = (TextView) view.findViewWithTag("list_check_in_bill");
+        billText.setText(bill);
 
         String customerName = model.getCustomerName();
         TextView customerNameText = (TextView) view.findViewWithTag("list_check_in_customerName");
@@ -62,7 +66,7 @@ public class RestaurantCheckInAdapter extends FirebaseListAdapter<RestaurantChec
                 .load(pictureUrl);
 
         if (status.equals(view.getResources().getString(R.string.lbl_CheckInRequest))){
-            view.setBackgroundColor(Color.parseColor("#b7fea0"));
+            view.setBackgroundColor(Color.parseColor(view.getResources().getString(R.string.color_bg_CheckInRequest)));
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -82,20 +86,19 @@ public class RestaurantCheckInAdapter extends FirebaseListAdapter<RestaurantChec
             });
         }
         else if (status.equals(view.getResources().getString(R.string.lbl_CheckOutRequest))){
-            view.setBackgroundColor(Color.parseColor("#ffb732"));
+            view.setBackgroundColor(Color.parseColor(view.getResources().getString(R.string.color_bg_CheckOutRequest)));
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
                         TextView transactionText = (TextView) v.findViewWithTag("list_check_in_transaction");
 
-                        Firebase mFirebaseCheckIn = new Firebase(getFireBase_url()).child("checkin").child(transactionText.getText().toString());
+                        Intent it = new Intent(v.getContext(), NearablePlayRestaurantCheckInActivity.class);
 
-                        Map<String, Object> updates = new HashMap<String, Object>();
+                        it.putExtra("FIREBASE_URL", getFireBase_url());
+                        it.putExtra("transaction", transactionText.getText().toString());
 
-                        updates.put("status", v.getResources().getString(R.string.lbl_CheckOutSucess));
-                        mFirebaseCheckIn.updateChildren(updates);
-                        //Toast.makeText(v.getContext(), "Check Out Id " + transactionText.getText(), Toast.LENGTH_LONG).show();
+                        v.getContext().startActivity(it);
                     }catch (Exception e){
 
                     }

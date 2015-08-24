@@ -26,24 +26,55 @@
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/list_check_in_table_lbl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lbl_Table"
-                android:textStyle="bold"
-                android:textSize="25dp"
-                android:tag="list_check_in_table_lbl"/>
 
-            <TextView
-                    android:id="@+id/list_check_in_table"
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/list_check_in_table_lbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lbl_loading"
+                    android:text="@string/lbl_Table"
                     android:textStyle="bold"
-                    android:textSize="35dp"
-                    android:tag="list_check_in_table"
-                    android:paddingLeft="5dp" />
+                    android:textSize="25dp"
+                    android:tag="list_check_in_table_lbl"/>
+
+                <TextView
+                        android:id="@+id/list_check_in_table"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_loading_number"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:tag="list_check_in_table"
+                        android:paddingLeft="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/list_check_in_bill_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_Bill"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:tag="list_check_in_bill_lbl"
+                        android:paddingLeft="5dp"/>
+
+                    <TextView
+                        android:id="@+id/list_check_in_bill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_loading_number"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:tag="list_check_in_bill"
+                        android:paddingLeft="5dp" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -67,7 +98,7 @@
                         android:textSize="25dp"
                         android:tag="list_check_in_status"
                         android:paddingLeft="5dp" />
-                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                     android:orientation="horizontal"
@@ -94,7 +125,8 @@
                         android:visibility="invisible"
                         android:paddingLeft="5dp" />
 
-                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

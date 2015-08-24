@@ -33,7 +33,7 @@ public class NearablePlayRestaurantCheckInActivity extends ActionBarActivity {
 
     private String FIREBASE_URL;
     private String transaction;
-    private String table;
+    private RestaurantCheckIn checkInEdit = new RestaurantCheckIn(0, "", "", "", "", "", 0.00);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +60,9 @@ public class NearablePlayRestaurantCheckInActivity extends ActionBarActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     try {
 
-                        RestaurantCheckIn checkIn = snapshot.getValue(RestaurantCheckIn.class);
+                        RestaurantCheckIn checkInUpdate = snapshot.getValue(RestaurantCheckIn.class);
 
                         final EditText textViewCheckInTable = (EditText) findViewById(R.id.restaurant_check_in_table);
-                        //textViewCheckInTable.setText(checkIn.getTable()); -- The user will type it
                         textViewCheckInTable.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -72,7 +71,11 @@ public class NearablePlayRestaurantCheckInActivity extends ActionBarActivity {
 
                             @Override
                             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                table = s.toString();
+                                try {
+                                    checkInEdit.setTable(Integer.parseInt(s.toString()));
+                                }catch (NumberFormatException  e){
+                                    checkInEdit.setTable(0);
+                                }
                             }
 
                             @Override
@@ -87,28 +90,75 @@ public class NearablePlayRestaurantCheckInActivity extends ActionBarActivity {
                                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                                     // Perform action on key press
-                                    final Button btnCheckInConfirmation = (Button)findViewById(R.id.btnCheckInConfirmation);
-                                    btnCheckInConfirmation.performClick();
+                                    //final TextView textViewCheckStatus = (TextView) findViewById(R.id.restaurant_check_in_status);
+                                    if (checkInEdit.getStatus().equals(getResources().getString(R.string.lbl_CheckInRequest))){
+                                        final Button btnCheckInConfirmation = (Button)findViewById(R.id.btnCheckInConfirmation);
+                                        btnCheckInConfirmation.performClick();
+                                    }
                                     return true;
                                 }
                                 return false;
                             }
                         });
 
+                        final EditText textViewCheckInBill = (EditText) findViewById(R.id.restaurant_check_in_bill);
+                        textViewCheckInBill.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                try{
+                                    checkInEdit.setBill(Double.parseDouble(s.toString()));
+                                }catch (NumberFormatException e){
+                                    checkInEdit.setBill(0.00);
+                                }
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+                        textViewCheckInBill.setOnKeyListener(new View.OnKeyListener() {
+                            @Override
+                            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                                // If the event is a key-down event on the "enter" button
+                                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                                    // Perform action on key press
+
+                                    final Button btnCheckInConfirmation = (Button)findViewById(R.id.btnCheckInConfirmation);
+                                    btnCheckInConfirmation.performClick();
+
+                                    return true;
+                                }
+                                return false;
+                            }
+                        });
+
+                        if (checkInEdit.getTransaction().isEmpty()){
+                            checkInEdit.Copy(checkInUpdate);
+                            textViewCheckInBill.setText(checkInEdit.getBill().toString());
+                            textViewCheckInTable.setText(checkInEdit.getTable().toString());
+                        }
+
                         final TextView textViewBeaconIdentifier = (TextView) findViewById(R.id.restaurant_check_in_beaconIdentifier);
-                        textViewBeaconIdentifier.setText(checkIn.getBeaconIdentifier());
+                        textViewBeaconIdentifier.setText(checkInUpdate.getBeaconIdentifier());
 
                         final TextView textViewCheckStatus = (TextView) findViewById(R.id.restaurant_check_in_status);
-                        textViewCheckStatus.setText(checkIn.getStatus());
+                        textViewCheckStatus.setText(checkInUpdate.getStatus());
 
                         final TextView textViewCustomerName = (TextView) findViewById(R.id.restaurant_check_in_customerName);
-                        textViewCustomerName.setText(checkIn.getCustomerName());
+                        textViewCustomerName.setText(checkInUpdate.getCustomerName());
 
                         final ImageView imageViewCheckIn = (ImageView) findViewById(R.id.restaurant_check_in_image);
                         imageViewCheckIn.setImageResource(R.drawable.keep_calm_and_wait);
                         Ion.with(imageViewCheckIn)
                                 .fitCenter()
-                                .load(checkIn.getPictureUrl());
+                                .load(checkInUpdate.getPictureUrl());
 
                         final Button btnCheckInConfirmation = (Button)findViewById(R.id.btnCheckInConfirmation);
                         btnCheckInConfirmation.setOnClickListener(new View.OnClickListener() {
@@ -119,8 +169,14 @@ public class NearablePlayRestaurantCheckInActivity extends ActionBarActivity {
 
                                     Map<String, Object> updates = new HashMap<String, Object>();
 
-                                    updates.put("status", getResources().getString(R.string.lbl_CheckInSucess));
-                                    updates.put("table", table);
+                                    if (textViewCheckStatus.getText().equals(getResources().getString(R.string.lbl_CheckInRequest))){
+                                        updates.put("status", getResources().getString(R.string.lbl_CheckInSucess));
+                                    }
+                                    else if (textViewCheckStatus.getText().equals(getResources().getString(R.string.lbl_CheckOutRequest))){
+                                        updates.put("status", getResources().getString(R.string.lbl_CheckOutSucess));
+                                    }
+                                    updates.put("table", checkInEdit.getTable());
+                                    updates.put("bill", checkInEdit.getBill());
                                     mFirebaseCheckIn.updateChildren(updates);
                                     //Toast.makeText(v.getContext(), "Check In Confirmed! Id: " + transaction, Toast.LENGTH_LONG).show();
 
