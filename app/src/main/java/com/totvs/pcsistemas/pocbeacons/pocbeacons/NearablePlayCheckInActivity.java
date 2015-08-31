@@ -146,52 +146,6 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
                     , UUID.randomUUID().toString()
                     , 0.00);
             watchCheckin(checkIn.getTransaction(), checkIn);
-
-            try {
-                Context context = NearablePlayCheckInActivity.this;
-
-                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-                builder.setContentTitle("Title");
-                builder.setContentText("Text");
-                builder.setSmallIcon(R.drawable.nearables_example01);
-                builder.setAutoCancel(true);
-
-                // OPTIONAL create soundUri and set sound:
-                //builder.setSound(soundUri);
-
-                Intent newIntent = new Intent(context, MainActivity.class);
-                newIntent.putExtra(context.getString(R.string.navigation_from_notification), true);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                PendingIntent pi = PendingIntent.getActivity(context, 0, newIntent, 0);
-
-                builder.setContentIntent(pi);
-
-                notificationManager.notify("MyTag", 0, builder.build());
-            }catch (Exception e){
-                Toast.makeText(NearablePlayCheckInActivity.this, "NotificationManager " + e.toString(), Toast.LENGTH_LONG).show();
-            }
-            /*try {
-                String message = "Nearable found " + selectedNearable.identifier;
-                HashMap<String, Object> params = new HashMap<String, Object>();
-                params.put("recipientId", 1);
-                params.put("message", message);
-                ParseCloud.callFunctionInBackground("sendPushToUser", params, new FunctionCallback() {
-                    @Override
-                    public void done(Object o, Throwable throwable) {
-                        Toast.makeText(NearablePlayCheckInActivity.this, "done Throwable " + throwable.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void done(Object o, ParseException e) {
-                        Toast.makeText(NearablePlayCheckInActivity.this, "done ParseException " + e.toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }catch (Exception e){
-                Toast.makeText(NearablePlayCheckInActivity.this, "ParseCloud Exception " +e.toString(), Toast.LENGTH_LONG).show();
-            }*/
         }
     }
 

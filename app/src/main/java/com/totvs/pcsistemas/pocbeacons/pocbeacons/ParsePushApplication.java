@@ -15,4 +15,5 @@ public class ParsePushApplication extends Application {
         Parse.initialize(this, getString(R.string.parseAppID), getString(R.string.parseClientID));
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }
+
 }

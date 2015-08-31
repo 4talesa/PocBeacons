@@ -5,6 +5,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -32,7 +33,7 @@ public class OwnerInfo {
     public String accountName = null;
     public String name = null;
 
-    public OwnerInfo(Activity MainActivity) {
+    public OwnerInfo(Context MainActivity) {
         final AccountManager manager = AccountManager.get(MainActivity);
         final Account[] accounts = manager.getAccountsByType("com.google");
         if (accounts[0].name != null) {
