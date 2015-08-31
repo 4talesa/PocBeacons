@@ -1,9 +1,11 @@
 package com.totvs.pcsistemas.pocbeacons.pocbeacons;
 
 import android.app.Application;
+import android.content.Intent;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.services.NearablePushNotification;
 
 /**
  * Created by rond.borges on 27/08/2015.

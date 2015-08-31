@@ -99,9 +99,7 @@
             android:name="com.parse.push.notification_icon"
             android:resource="@drawable/nearables_example01" />
 
-        <service
-            android:name=".services.NearablePushNotification"
-            android:exported="false" >
+        <service android:name=".services.NearablePushNotification">
         </service>
     </application>
 

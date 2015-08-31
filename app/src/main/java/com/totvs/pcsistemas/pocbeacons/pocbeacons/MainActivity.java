@@ -10,17 +10,25 @@ import android.widget.*;
 
 import com.estimote.sdk.EstimoteSDK;
 import com.firebase.client.Firebase;
+import com.totvs.pcsistemas.pocbeacons.pocbeacons.services.NearablePushNotification;
 
 public class MainActivity extends ActionBarActivity{
 
     private static final String ESTIMOTEAPPID = "pocbeacons";
     private static final String ESTIMOTETOKEN = "1c9283b168671ce2a55c07095a9ac983";
 
+    private NearablePushNotification pushNotifier;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Firebase.setAndroidContext(this);
+
+        Intent msgIntent = new Intent(MainActivity.this, NearablePushNotification.class);
+
+        msgIntent.putExtra(NearablePushNotification.REQUEST_TAG, "MainActivity");
+        startService(msgIntent);
 
         final ImageButton btnListBeacons = (ImageButton)findViewById(R.id.btnListBeacons);
         btnListBeacons.setOnClickListener(new View.OnClickListener() {
