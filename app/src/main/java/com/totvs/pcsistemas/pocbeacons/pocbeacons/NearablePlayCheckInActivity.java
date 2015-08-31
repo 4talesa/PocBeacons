@@ -1,10 +1,14 @@
 package com.totvs.pcsistemas.pocbeacons.pocbeacons;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +25,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.koushikdutta.ion.Ion;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.drivers.FirebaseConn;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.OwnerInfo;
 import com.totvs.pcsistemas.pocbeacons.pocbeacons.models.RestaurantCheckIn;
@@ -82,13 +90,13 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
 
         ownerInfo = new OwnerInfo(this);
 
+        selectedNearable = null;
+
         performPlay();
     }
 
     private void performPlay(){
         connectToService();
-
-        selectedNearable = null;
 
         final TextView textViewCheckInTable = (TextView) findViewById(R.id.check_in_table);
         textViewCheckInTable.setText(R.string.lbl_loading);
@@ -101,6 +109,9 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
 
         final TextView textViewCustomerName = (TextView) findViewById(R.id.check_in_customerName);
         textViewCustomerName.setText(ownerInfo.name);
+
+        final TextView textViewBill = (TextView) findViewById(R.id.check_in_bill);
+        textViewBill.setText(R.string.lbl_loading);
 
         final ImageView imageViewCheckIn = (ImageView) findViewById(R.id.check_in_image);
         imageViewCheckIn.setImageResource(R.drawable.keep_calm_and_wait);
@@ -134,56 +145,107 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
                     , ownerInfo.name
                     , UUID.randomUUID().toString()
                     , 0.00);
-            Firebase mFirebaseCheckInRequest = new FirebaseConn().child("checkin").child(checkIn.getTransaction());
-            mFirebaseCheckInRequest.setValue(checkIn);
+            watchCheckin(checkIn.getTransaction(), checkIn);
 
-            mFirebaseCheckInRequest.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    try {
+            try {
+                Context context = NearablePlayCheckInActivity.this;
 
-                        checkIn = snapshot.getValue(RestaurantCheckIn.class);
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-                        final TextView textViewCheckInTable = (TextView) findViewById(R.id.check_in_table);
-                        textViewCheckInTable.setText(checkIn.getTable().toString());
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                builder.setContentTitle("Title");
+                builder.setContentText("Text");
+                builder.setSmallIcon(R.drawable.nearables_example01);
+                builder.setAutoCancel(true);
 
-                        final TextView textViewBeaconIdentifier = (TextView) findViewById(R.id.check_in_beaconIdentifier);
-                        textViewBeaconIdentifier.setText(checkIn.getBeaconIdentifier());
+                // OPTIONAL create soundUri and set sound:
+                //builder.setSound(soundUri);
 
-                        final TextView textViewCheckStatus = (TextView) findViewById(R.id.check_in_status);
-                        textViewCheckStatus.setText(checkIn.getStatus());
+                Intent newIntent = new Intent(context, MainActivity.class);
+                newIntent.putExtra(context.getString(R.string.navigation_from_notification), true);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent pi = PendingIntent.getActivity(context, 0, newIntent, 0);
 
-                        final TextView textViewCustomerName = (TextView) findViewById(R.id.check_in_customerName);
-                        textViewCustomerName.setText(checkIn.getCustomerName());
+                builder.setContentIntent(pi);
 
-                        final TextView textViewBill = (TextView) findViewById(R.id.check_in_bill);
-                        textViewBill.setText(checkIn.getBill().toString());
-
-                        final ImageView imageViewCheckIn = (ImageView) findViewById(R.id.check_in_image);
-                        imageViewCheckIn.setImageResource(R.drawable.keep_calm_and_wait);
-                        Ion.with(imageViewCheckIn)
-                                .fitCenter()
-                                .load(checkIn.getPictureUrl());
-
-                        final Button btnCheckOut = (Button)findViewById(R.id.btnCheckOut);
-                        if (checkIn.getStatus().equals(getResources().getString(R.string.lbl_CheckInSucess))){
-                            btnCheckOut.setText("Check Out");
-                        }else{
-                            btnCheckOut.setText("Not available");
-                        }
-
-                    } catch (Exception e) {
-                        //Toast.makeText(NearablePlayProximityActivity.this, "updateNearableFoundFromFirebase: " + e.toString(), Toast.LENGTH_LONG).show();
+                notificationManager.notify("MyTag", 0, builder.build());
+            }catch (Exception e){
+                Toast.makeText(NearablePlayCheckInActivity.this, "NotificationManager " + e.toString(), Toast.LENGTH_LONG).show();
+            }
+            /*try {
+                String message = "Nearable found " + selectedNearable.identifier;
+                HashMap<String, Object> params = new HashMap<String, Object>();
+                params.put("recipientId", 1);
+                params.put("message", message);
+                ParseCloud.callFunctionInBackground("sendPushToUser", params, new FunctionCallback() {
+                    @Override
+                    public void done(Object o, Throwable throwable) {
+                        Toast.makeText(NearablePlayCheckInActivity.this, "done Throwable " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                }
 
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    // do nothing
-                }
-            });
-
+                    @Override
+                    public void done(Object o, ParseException e) {
+                        Toast.makeText(NearablePlayCheckInActivity.this, "done ParseException " + e.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }catch (Exception e){
+                Toast.makeText(NearablePlayCheckInActivity.this, "ParseCloud Exception " +e.toString(), Toast.LENGTH_LONG).show();
+            }*/
         }
+    }
+
+    private void watchCheckin(String transactionId, RestaurantCheckIn newCheckin){
+        Firebase mFirebaseCheckInRequest = new FirebaseConn().child("checkin").child(transactionId);
+        if (newCheckin!=null) {
+            mFirebaseCheckInRequest.setValue(newCheckin);
+        }
+
+        mFirebaseCheckInRequest.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                try {
+
+                    checkIn = snapshot.getValue(RestaurantCheckIn.class);
+
+                    final TextView textViewCheckInTable = (TextView) findViewById(R.id.check_in_table);
+                    textViewCheckInTable.setText(checkIn.getTable().toString());
+
+                    final TextView textViewBeaconIdentifier = (TextView) findViewById(R.id.check_in_beaconIdentifier);
+                    textViewBeaconIdentifier.setText(checkIn.getBeaconIdentifier());
+
+                    final TextView textViewCheckStatus = (TextView) findViewById(R.id.check_in_status);
+                    textViewCheckStatus.setText(checkIn.getStatus());
+
+                    final TextView textViewCustomerName = (TextView) findViewById(R.id.check_in_customerName);
+                    textViewCustomerName.setText(checkIn.getCustomerName());
+
+                    final TextView textViewBill = (TextView) findViewById(R.id.check_in_bill);
+                    textViewBill.setText(checkIn.getBill().toString());
+
+                    final ImageView imageViewCheckIn = (ImageView) findViewById(R.id.check_in_image);
+                    imageViewCheckIn.setImageResource(R.drawable.keep_calm_and_wait);
+                    Ion.with(imageViewCheckIn)
+                            .fitCenter()
+                            .load(checkIn.getPictureUrl());
+
+                    final Button btnCheckOut = (Button)findViewById(R.id.btnCheckOut);
+                    if (checkIn.getStatus().equals(getResources().getString(R.string.lbl_CheckInSucess))){
+                        btnCheckOut.setText("Check Out");
+                    }else{
+                        btnCheckOut.setText("Not available");
+                    }
+
+                } catch (Exception e) {
+                    //Toast.makeText(NearablePlayProximityActivity.this, "updateNearableFoundFromFirebase: " + e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                // do nothing
+            }
+        });
     }
 
     @Override
@@ -233,6 +295,9 @@ public class NearablePlayCheckInActivity extends ActionBarActivity {
             performPlay();
         }
 
+        if (checkIn != null) {
+            watchCheckin(checkIn.getTransaction(), checkIn);
+        }
     }
 
     @Override

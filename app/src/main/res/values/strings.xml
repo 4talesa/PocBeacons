@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">PoC Beacons</string>
 
+    <string name="parseAppID">gP7QbFUfyPZ4717IBkhO5obf7ftyTp8OzODcKas2</string>
+    <string name="parseClientID">rPcrSNTFOZZP8eYNNCcpv7ZEVz2uFu5CYcHvGUjj</string>
+    <string name="navigation_from_notification">Navigation from notification</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_beacon_list">Beacon List</string>

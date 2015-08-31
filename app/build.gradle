@@ -52,4 +52,6 @@ dependencies {
     compile project(':estimote-sdk')
     compile 'com.firebase:firebase-client-android:2.3.1+'
     compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'com.parse.bolts:bolts-android:1.+'
+    compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }

@@ -11,11 +11,7 @@ import android.widget.*;
 import com.estimote.sdk.EstimoteSDK;
 import com.firebase.client.Firebase;
 
-
 public class MainActivity extends ActionBarActivity{
-
-    private ImageButton btnListBeacons;
-    private ImageButton btnListNearables;
 
     private static final String ESTIMOTEAPPID = "pocbeacons";
     private static final String ESTIMOTETOKEN = "1c9283b168671ce2a55c07095a9ac983";
